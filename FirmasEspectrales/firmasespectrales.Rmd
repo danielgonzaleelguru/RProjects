@@ -29,7 +29,20 @@ plot(pressure)
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 
-```{r}
+# **Genera Firma Espectral de imágenes Sentinel**
+
+```{r CargaImagenesSentinel}
 library(raster)
-pathFolder = "E:\Data\Raster\Sentinel2"
+pathFolder = "E:/Data/Raster/Sentinel2/S2B_MSIL2A_20240126T153629_N0510_R068_T18PWT_20240126T192933.SAFE/GRANULE/L2A_T18PWT_A035987_20240126T153623/IMG_DATA/R20m" # ruta al archivo de imagenes 
+archivosImagenes  <-list.files(pathFolder,full.names=T) # guarda cada archivo en el vector js2files 
+archivosImagenes[2] # imprime el contenido de la posición 2.
+
+
+
+```
+
+```{r}
+vectorBandas <-c("B02", "B03", "B04", "B05", "B06", "B07","B08", "B11", "B12")
+stactFiles <-unique(grep(paste(vectorBandas,collapse ="|"),archivosImagenes,value=TRUE)) # en este vecor se guardan unicamente las bandas indicadas en en el vectorbandas.
+stactFiles[1]
 ```
