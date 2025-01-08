@@ -1,0 +1,78 @@
+---
+title: "BostonHousingTreeClassification"
+author: "Daniel Gonzalez"
+date: "2025-01-08"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Predicción con arboles de decisión: Caso Boston Housing
+
+```{r}
+library(MASS)
+library(tidymodels)
+library(tidyr)
+
+```
+
+```{r}
+data=(Boston)
+boston_data_long= Boston%>%pivot_longer(cols=everything(),names_to ="variable",values_to = "value")
+
+```
+
+```{r}
+
+boston_histograms <- ggplot(boston_data_long,aes(x=value))+
+geom_histogram(bins=30, color="black",fill="lightblue")+
+facet_wrap(~variable,scales="free",ncol=4) +
+labs(title="Histograma de variables numéricas en la base de datos Boston Housing",
+     x="Value",y="Frecuency")+ theme_minimal()
+
+plot(boston_histograms)
+```
+
+```{r}
+set.seed(123)
+data_split = initial_split(Boston,prop=0.75)
+train_data= training(data_split)
+test_data=testing(data_split)
+```
+
+```{r}
+tree_spec=decision_tree() %>% set_engine("rpart") %>%  set_mode("regression")
+tree_fit=tree_spec %>% fit(medv ~.,data=train_data)
+```
+
+```{r}
+predictions = tree_fit %>% predict(test_data) %>% pull(.pred)
+model_performance= test_data %>%  mutate(predictions=predictions) %>%  
+metrics(truth=medv, estimate=predictions)
+print(model_performance)
+
+```
+
+```{r}
+print("Valores de rmse de 0 indican que el modelo tiene el ajuste perfecto. Mide la diferencia entre los valores previstos y los reales.En esta caso nos indica que las predicciones se alejan 5.21 unidades de los valores reales")
+print("valores de rsq(R Cuadrado o Coeficiente de determinación) evalua la calidad del modelo. Mide hasta que punto el modelo explica la varianza de la variable objetivo.Varía de 0 a 1.El 0 no  existe relación lineal entre los valores observados y predichos, 0.7 a 0.9-> el modelo describe los datos suficientemente bien, 0.5 a 0.7 el modelo es aceptable, pero aún puede mejorarse.")
+print("El Error absoluto medio(mae). Mide el tamaño promedio de los errores entre los valores predichos y los valores reales.Un mae de 0 representa un ajuste perfecto.")
+```
+
+```{r}
+new_data=tribble(~crim, ~zn, ~indus, ~chas, ~nox, ~rm, ~age, ~dis, ~rad, ~tax, ~ptratio, ~black, ~lstat,0.03237, 0, 2.18, 0, 0.458, 6.998, 45.8, 6.0622, 3, 222, 18.7, 394.63, 2.94)
+
+predictions = predict(tree_fit, new_data)
+print(predictions)
+```
+
+**Valores medio previsto (en miles de dolares) de esta casa en concreto.**
+
+```{r}
+library(rpart.plot)
+rpart.plot(tree_fit$fit,type=4,extra=101,under=TRUE,cex=0.8, box.palette="auto")
+```
+
+**Identificación de la importancia de una Variable**
