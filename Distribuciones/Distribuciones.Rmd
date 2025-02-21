@@ -1,0 +1,155 @@
+---
+title: "PruebaDistribución"
+author: "Daniel Gonzalez"
+date: "2025-02-21"
+output:
+  word_document: default
+  html_document: default
+  pdf_document: default
+---
+
+```{r}
+library(ggplot2)
+library(fitdistrplus)
+
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Distribuciones de Probabilidad y Prueba de Bonda de Ajuste
+
+## Distribución Exponencial
+
+```{r}
+set.seed(1073173761)
+
+expo=round(rexp(100,0.0625),2) #Distribución Exponencial
+print(expo)
+
+```
+
+## **Gráfica de Densidad de la distribución Exponencial**
+
+```{r}
+df = data.frame(expo)
+ggplot(df,aes(x=expo))+geom_density(color=4,lwd=1,linetype=1)
+```
+
+## Prueba de Ajuste para la distribución Exponencial
+
+```{r}
+fit1=fitdist(expo,"exp")
+ks.test(expo,"pexp",fit1$stimate)
+```
+
+## Distribución Normal
+
+```{r}
+normal= round(rnorm(100,179.1,28.2),2) #Distribución Normal
+print(normal)
+```
+
+## **Gráfica de la Distribución Normal**
+
+```{r}
+df = data.frame(normal)
+ggplot(df,aes(x=normal))+geom_density(color=4,lwd=1,linetype=1)
+```
+
+## Prueba de Shapiro para la distribución Normal
+
+```{r}
+shapiro.test(normal)
+```
+
+## **Distribución de Poisson**
+
+```{r}
+poisson =round(rpois(100,43.2) ,2) # Distribución Poisson
+print(poisson)
+```
+
+## Gráfica de la distribución de Poisson
+
+```{r}
+df = data.frame(poisson)
+ggplot(df,aes(x=poisson))+geom_density(color=4,lwd=1,linetype=1)
+```
+
+## Prueba de Bondad de ajuste de la distribución Poisson
+
+```{r}
+fit1=fitdist(poisson,"pois",method="mle")
+summary(fit1)
+```
+
+## **Distribución Binomial**
+
+```{r}
+binomial=round(rbinom(100,20,0.5) ,2) #Distibución binomial.
+print(binomial)
+```
+
+## Gráfica de la distribución Binomial
+
+```{r}
+df = data.frame(binomial)
+ggplot(df,aes(x=binomial))+geom_density(color=4,lwd=1,linetype=1)
+```
+
+## Distribución Chi Cuadrado
+
+```{r}
+chi=round(rchisq(100,2) ,2) #Distribución Chi Cuadrado.
+print(chi)
+```
+
+## Gráfica de la distribución Chi Cuadrado
+
+```{r}
+df = data.frame(chi)
+ggplot(df,aes(x=chi))+geom_density(color=4,lwd=1,linetype=1)
+```
+
+## Distribución Log Normal
+
+```{r}
+lognomal=round(rlnorm(100,2.32,0.2),2)
+print(lognomal)
+
+```
+
+## Gráfica de la Distribución Log Normal
+
+```{r}
+df = data.frame(lognomal)
+ggplot(df,aes(x=lognomal))+geom_density(color=4,lwd=1,linetype=1)
+```
+
+Distribución Beta
+
+```{r}
+beta =round(rbeta(100,2,2),2)
+print(beta)
+
+```
+
+## Gráfica de la distribución Beta
+
+```{r}
+df = data.frame(beta)
+ggplot(df,aes(x=beta))+geom_density(color=4,lwd=1,linetype=1)
+```
+
+## Distribución Gamma
+
+```{r}
+gamma = round(rgamma(100,6,2),2)
+print(gamma)
+```
+
+## Gráfica de la distribución Gamma
+
+```{r}
+df = data.frame(gamma)
+ggplot(df,aes(x=gamma))+geom_density(color=4,lwd=1,linetype=1)
+```
