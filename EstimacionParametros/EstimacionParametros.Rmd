@@ -1,6 +1,6 @@
 ---
-title: "EstimacionParametros"
-author: "Daniel Gonzalez"
+title: "Estimacion Paámetros"
+author: "Daniel González"
 date: "2025-04-04"
 output:
   pdf_document: default
@@ -10,8 +10,6 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
-`{library("ProbBayeslib")}`
 
 ## Estimación de Parámetros
 
@@ -74,6 +72,12 @@ print(limite_inferior)
 
 Con un intervalo de confianza del 95%, el salario de los profesionales recien egresados de Ingeniería Industrial se encuentra entre \$342.618 y \$ 457.382 es mayor que el salario de los profesionales recien egresados de Adminitración de Empresas. Esta afirmación se debe al tener el 95% de certeza, es decir, de 100 muestras existen 95 con estos resultados.
 
+2.  **Problema 2:**
+
+**Solución:**
+
+**El algoritmo encapsulado en una función**
+
 ```{r}
 intervalo_confianza=function(nivel_confianza, media1, media2,desviacion1, desviacion2, tamanio1, tamanio2){
   
@@ -107,11 +111,11 @@ print(df)
 
 ```
 
-2.  Problema 2
+2.  **Problema 3:**
+
+    **Solución:**
 
     ```{r}
     df =intervalo_confianza(0.95,21333,17875,2160.2,853.9,6,4 )
     print(df)
     ```
-
-3.  Solución
