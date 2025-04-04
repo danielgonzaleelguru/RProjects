@@ -1,0 +1,37 @@
+---
+title: "PruebaGraficos"
+author: "Daniel Gonzalez"
+date: "2025-03-20"
+output:
+  html_document:
+    df_print: paged
+  word_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+library(dplyr)
+library(leaflet)
+library(magrittr)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+```{r}
+data =data.frame(
+  long=sample(seq(-150,150),20),
+  lat = sample(seq(-50,50),20),
+  val=round(rnorm(20),2),
+  name=paste("poin",letters[1:20],sep="_")
+  
+)
+
+m=leaflet(data=data) %>%
+  addTiles() %>%
+  addCircleMarkers(~long,~lat,popup=~as.character(name))
+m
+  
+```

@@ -1,5 +1,5 @@
 ---
-title: "PruebaDistribución"
+title: "Prueba Distribución"
 author: "Daniel Gonzalez"
 date: "2025-02-21"
 output:

@@ -1,0 +1,120 @@
+---
+title: "EstimacionParametros"
+author: "Daniel Gonzalez"
+date: "2025-04-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+`{library("ProbBayeslib")}`
+
+## Estimación de Parámetros
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+
+```
+
+**Aplique la siguiente ecuación para resolver los problemas a continuación :**
+
+$$
+(\vec{y_1}+\vec{y_2})\pm z_\alpha/2 \sqrt{\frac{s^2_1}{n_1}+\frac{s^2_2}{n_2}}
+$$
+
+1.  **Problema a resolver:**
+
+Con un intervalo de confianza de 95% se desea conocer la diferencia entre los salarios de los profesionales de ingeniería industrial y los de administración en la ciudad de Bogotá. Para tal efecto, se cuenta con la siguiente información:
+
+-   Se seleccionó una muestra aleatoria de los salarios de 70 profesinales recien egresados de Ingeniería Industrial, con una media de \$2.100.000 y una desviación estándar de \$200.000.
+
+-   Se seleccionó otra muestra aleatoria de los salarios de 35 recien egresados de Administración, con una media de \$1.700.000 y una desviación estándar de \$100.000
+
+```{r}
+
+nivel_confianza=0.95
+alfa_media= (1-nivel_confianza)/2
+  
+tamanio_muestra_industrial=70
+media_industrial= 2100000
+desviacion_industrial=200000
+varianza_industrial = desviacion_industrial^2
+
+tamanio_muestra_administracion=35
+media_administración=1700000
+desviacion_administracion=100000
+varianza_administracion= desviacion_administracion^2
+
+z_alf_media= qnorm(alfa_media,0,1)
+#print(z_alf_media)
+
+z_alfa_media_positivivo= z_alf_media *-1
+#print(z_alfa_media_positivivo)
+
+raiz_cuadra = sqrt((varianza_industrial/tamanio_muestra_industrial) +(varianza_administracion/tamanio_muestra_administracion ) )
+
+#print(raiz_cuadra)
+
+product= z_alfa_media_positivivo* raiz_cuadra
+#print(product)
+
+dif_media= media_industrial -media_administración 
+#print(dif_media)
+
+limite_inferior=dif_media-product
+limite_superior=dif_media+product
+
+print("Limite Superior:")
+print(limite_superior)
+
+print("Limite Inferior:")
+print(limite_inferior)
+```
+
+**Análisis del Resultado:**
+
+Con un intervalo de confianza del 95%, el salario de los profesionales recien egresados de Ingeniería Industrial se encuentra entre \$342.618 y \$ 457.382 es mayor que el salario de los profesionales recien egresados de Adminitración de Empresas. Esta afirmación se debe al tener el 95% de certeza, es decir, de 100 muestras existen 95 con estos resultados.
+
+```{r}
+intervalo_confianza=function(nivel_confianza, media1, media2,desviacion1, desviacion2, tamanio1, tamanio2){
+  
+  alfa_media= (1-nivel_confianza)/2
+  z_alf_media= qnorm(alfa_media,0,1) # Encuentra el valor cuantil para cualquier probabilidad p. El parámetro 0 es la media y el 1 es la desviación estandar.
+  z_alfa_media_positivivo= z_alf_media *-1
+  
+  varianza1 = desviacion1^2
+  varianza2= desviacion2^2
+  
+  raiz_cuadra = sqrt((varianza1/tamanio1) +(varianza1/tamanio2 ) )
+  
+  product= z_alfa_media_positivivo* raiz_cuadra
+  
+  dif_media= media1 -media2
+  
+  limite_inferior=dif_media-product
+  
+  limite_superior=dif_media+product
+  
+  df =data.frame(
+    "Limite inferior"=limite_inferior,
+    "Limite Superior"=limite_superior )
+  
+  return(df)
+  
+}
+
+df =intervalo_confianza(0.95,2100000,1700000,200000,100000,70,35 )
+print(df)
+
+```
+
+2.  Problema 2
+
+    ```{r}
+    df =intervalo_confianza(0.95,21333,17875,2160.2,853.9,6,4 )
+    print(df)
+    ```
+
+3.  Solución
